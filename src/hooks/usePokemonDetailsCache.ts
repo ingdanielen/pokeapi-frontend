@@ -22,7 +22,7 @@ export function usePokemonDetailsCache() {
             : `https://pokeapi.co/api/v2/pokemon/${nameOrUrl}`;
           const res = await axios.get(url);
           cache.current[nameOrUrl.toLowerCase()] = res.data;
-        } catch (e) {
+        } catch {
           cache.current[nameOrUrl.toLowerCase()] = undefined;
         }
       })

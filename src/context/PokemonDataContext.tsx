@@ -1,8 +1,8 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect } from "react";
+import { usePokemonDetailsCache } from "../hooks/usePokemonDetailsCache";
 import { usePokemonList } from "../hooks/usePokemonList";
 import { usePokemonTypes } from "../hooks/usePokemonTypes";
-import { usePokemonDetailsCache } from "../hooks/usePokemonDetailsCache";
-import { PokemonListItem, PokemonTypeOption } from "../types/pokemon";
+import { PokemonDetails, PokemonListItem, PokemonTypeOption } from "../types/pokemon";
 
 interface PokemonDataContextProps {
   pokemons: PokemonListItem[];
@@ -12,9 +12,8 @@ interface PokemonDataContextProps {
   typesLoading: boolean;
   typesError: string | null;
   fetchDetails: (namesOrUrls: string[]) => Promise<void>;
-  getDetails: (nameOrUrl: string) => any;
+  getDetails: (nameOrUrl: string) => PokemonDetails | null;
   isLoadingDetails: (nameOrUrl: string) => boolean;
-  getSpeciesData: (nameOrUrl: string) => any;
 }
 
 const PokemonDataContext = createContext<PokemonDataContextProps | undefined>(undefined);
@@ -32,12 +31,7 @@ export const PokemonDataProvider: React.FC<{ children: React.ReactNode }> = ({ c
     }
   }, [pokemons, loading, fetchDetails]);
 
-  // Función para obtener datos de especies (placeholder por ahora)
-  const getSpeciesData = (nameOrUrl: string) => {
-    // Por ahora retornamos null, pero esto se puede expandir
-    // para incluir caché de datos de especies
-    return null;
-  };
+
 
   return (
     <PokemonDataContext.Provider
@@ -51,7 +45,6 @@ export const PokemonDataProvider: React.FC<{ children: React.ReactNode }> = ({ c
         fetchDetails,
         getDetails,
         isLoadingDetails: isLoading,
-        getSpeciesData,
       }}
     >
       {children}
