@@ -105,7 +105,7 @@ const Header: React.FC<HeaderProps> = ({ onPokemonSelect }) => {
             alt="Pokémon Explorer"
             width={150}
             height={150}
-            className="object-contain md:w-32 md:h-32 w-16 h-16"
+            className="object-contain md:w-32 md:h-32 w-24 h-24"
           />
         </div>
 

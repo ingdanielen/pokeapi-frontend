@@ -40,29 +40,29 @@ const PokemonHero: React.FC<PokemonHeroProps> = ({ onExploreClick }) => {
 
 
       {/* Hero Content */}
-      <div className="relative z-10 flex items-center py-10 px-4 lg:px-16">
-        <div className="w-full grid lg:grid-cols-2 gap-12 items-center">
+      <div className="relative z-10 flex items-center py-10  lg:py-16 px-4 lg:px-16">
+        <div className="w-full grid md:grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center">
           {/* Contenido del hero */}
-          <div className="space-y-8">
+          <div className="space-y-4 sm:space-y-6 lg:space-y-8 md:text-center lg:text-left md:max-w-2xl md:mx-auto">
             {/* Logo Pokémon */}
             {/* Título principal */}
-            <div className="space-y-4">
-              <h1 className="text-4xl lg:text-6xl font-black text-white drop-shadow-2xl leading-tight font-kinetika">
+            <div className="space-y-2 sm:space-y-3 lg:space-y-4">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white drop-shadow-2xl leading-tight font-kinetika">
                 PokeApi
                 <span className="text-blue-900/50">Kanto</span>
               </h1>
-              <p className="text-xl  text-white/90 max-w-lg leading-relaxed drop-shadow-lg">
+              <p className="text-lg sm:text-xl md:text-xl text-white/90 max-w-lg md:max-w-2xl md:mx-auto lg:mx-0 leading-relaxed drop-shadow-lg">
                 Explora los datos de los Pokémon de la primera generación.
               </p>
             </div>
 
             {/* Botones de acción */}
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:justify-center lg:justify-start">
               <button
                 onClick={handleExploreClick}
-                className="group px-36 py-4 bg-white text-orange-600 rounded-lg font-bold text-lg cursor-pointer hover:text-orange-700 transition-all duration-300 transform hover:scale-105 flex items-center gap-3"
+                className="group px-6 sm:px-8 md:px-10 lg:px-12 py-3 sm:py-4 bg-white text-orange-600 rounded-lg font-bold text-base sm:text-lg md:text-lg cursor-pointer hover:text-orange-700 transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-3"
               >
-                <EyeIcon className="w-6 h-6" />
+                <EyeIcon className="w-5 h-5 sm:w-6 sm:h-6" />
                 Explorar Pokémon
               </button>
             </div>
@@ -94,8 +94,8 @@ const PokemonHero: React.FC<PokemonHeroProps> = ({ onExploreClick }) => {
           </div>
 
           {/* Imagen de Pokémon - Reemplazando las pokédex */}
-          <div className="relative">
-            <div className="relative z-10 transform hover:scale-105 transition-transform duration-500">
+          <div className="relative md:flex md:justify-center md:order-first lg:order-last">
+            <div className="relative  z-10 transform  hover:scale-105 transition-transform duration-500 w-full md:w-9/12 lg:w-full md:h-auto">
               <Image
                 src="/images/pokehero.png"
                 alt="Pokémon Group"
@@ -112,7 +112,7 @@ const PokemonHero: React.FC<PokemonHeroProps> = ({ onExploreClick }) => {
       </div>
 
       {/* Animación de oleaje */}
-      <div className="mt-40">
+      <div className="mt-28 lg:mt-40">
       <WaveAnimation 
         height={180}
         waveColor="#ffffff"
