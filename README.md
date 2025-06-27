@@ -54,7 +54,7 @@ Una aplicación web moderna para explorar y descubrir el mundo Pokémon, constru
 
 1. **Clona el repositorio**:
 ```bash
-git clone <repository-url>
+git clone https://github.com/ingdanielen/pokeapi-frontend.git
 cd pokeapi-frontend
 ```
 
