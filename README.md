@@ -31,8 +31,8 @@ Una aplicación web moderna para explorar y descubrir el mundo Pokémon, constru
 - **Vistas Múltiples**: Alterna entre vista de cuadrícula y tabla
 - **Filtrado Avanzado**: Filtra por tipo de Pokémon
 - **Búsqueda en Tiempo Real**: Busca Pokémon por nombre
-- **Ordenamiento**: Ordena por nombre o ID
-- **Modal Detallado**: Información completa de cada Pokémon
+- **Ordenamiento**: Ordena por nombre o # en la pokedex
+- **Modal Detallado**: Información de cada Pokémon
 - **Diseño Responsivo**: Optimizado para todos los dispositivos
 - **Caché Inteligente**: Carga eficiente de datos con caché automático
 - **Animaciones**: Transiciones suaves y efectos visuales
@@ -290,7 +290,6 @@ npm run lint         # Ejecuta ESLint
 ## 🎨 Características de Diseño
 
 - **Diseño Responsivo**: Mobile-first approach
-- **Tema Oscuro/Claro**: Soporte para temas
 - **Animaciones**: Transiciones suaves
 - **Accesibilidad**: ARIA labels y navegación por teclado
 - **Performance**: Lazy loading y optimizaciones
@@ -303,14 +302,3 @@ npm run lint         # Ejecuta ESLint
 4. Push a la rama (`git push origin feature/AmazingFeature`)
 5. Abre un Pull Request
 
-## 📄 Licencia
-
-Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
-
-## 🙏 Agradecimientos
-
-- [PokéAPI](https://pokeapi.co/) por proporcionar los datos
-- [Next.js](https://nextjs.org/) por el framework
-- [Tailwind CSS](https://tailwindcss.com/) por los estilos
-- [TanStack](https://tanstack.com/) por las tablas
-- [Lucide](https://lucide.dev/) por los iconos
