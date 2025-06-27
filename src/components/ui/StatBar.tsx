@@ -27,7 +27,7 @@ export const StatBar: React.FC<StatBarProps> = ({
           style={{ width: `${percentage}%` }}
         ></div>
       </div>
-      <span className="text-xs font-medium text-gray-600 min-w-[1.5rem]">
+      <span className="text-sm font-medium text-gray-600 min-w-[1.5rem]">
         {value}
       </span>
     </div>

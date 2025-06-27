@@ -70,7 +70,7 @@ export const TableRow: React.FC<TableRowProps> = ({ children, className = "", on
 
 export const TableCell: React.FC<TableCellProps> = ({ children, className = "" }) => {
   return (
-    <td className={`px-2 py-2 text-center ${className}`}>
+    <td className={`px-3 py-3 text-center ${className}`}>
       {children}
     </td>
   );
@@ -78,7 +78,7 @@ export const TableCell: React.FC<TableCellProps> = ({ children, className = "" }
 
 export const TableHead: React.FC<TableHeadProps> = ({ children, className = "" }) => {
   return (
-    <th className={`px-2 py-2 text-center font-medium text-gray-700 text-xs whitespace-nowrap ${className}`}>
+    <th className={`px-3 py-3 text-center font-medium text-gray-700 text-sm whitespace-nowrap ${className}`}>
       {children}
     </th>
   );

@@ -63,8 +63,6 @@ interface PokemonTableProps {
   isLoadingDetails: (nameOrUrl: string) => boolean;
 }
 
-
-
 /**
  * Componente de tabla para mostrar información detallada de Pokémon
  *
@@ -108,50 +106,8 @@ const PokemonTable: React.FC<PokemonTableProps> = ({
   getDetailsData,
   isLoadingDetails,
 }) => {
-  /** Página actual de la paginación */
-  const [currentPage, setCurrentPage] = useState(1);
   /** Número de elementos por página */
   const [pageSize, setPageSize] = useState(20);
-
-  // Cálculos de paginación
-  const totalItems = pokemons.length;
-  const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
-  const startIndex = (currentPage - 1) * pageSize;
-  const endIndex = Math.min(startIndex + pageSize, totalItems);
-  const currentPageData = pokemons.slice(startIndex, endIndex);
-
-  /**
-   * Navega a la página anterior
-   */
-  const handlePreviousPage = () => {
-    setCurrentPage((prev) => Math.max(1, prev - 1));
-  };
-
-  /**
-   * Navega a la página siguiente
-   */
-  const handleNextPage = () => {
-    setCurrentPage((prev) => Math.min(totalPages, prev + 1));
-  };
-
-  /**
-   * Cambia el número de elementos por página
-   *
-   * @param newPageSize - Nuevo tamaño de página
-   */
-  const handlePageSizeChange = (newPageSize: number) => {
-    setPageSize(newPageSize);
-    setCurrentPage(1);
-  };
-
-  /**
-   * Navega directamente a una página específica
-   *
-   * @param page - Número de página a la que navegar
-   */
-  const handleGoToPage = (page: number) => {
-    setCurrentPage(Math.max(1, Math.min(totalPages, page)));
-  };
 
   /**
    * Definición de columnas para la tabla
@@ -194,7 +150,7 @@ const PokemonTable: React.FC<PokemonTableProps> = ({
         size: 120,
         cell: ({ getValue }) => (
           <div className="flex justify-center">
-            <span className="capitalize text-gray-900 font-medium">
+            <span className="capitalize text-gray-900 font-medium text-base">
               {getValue() as string}
             </span>
           </div>
@@ -224,7 +180,7 @@ const PokemonTable: React.FC<PokemonTableProps> = ({
                 {details.types.map((t: PokemonType) => (
                   <span
                     key={t.type.name}
-                    className="px-2 py-0.5 rounded text-xs capitalize text-white font-medium"
+                    className="px-2 py-1 rounded text-sm capitalize text-white font-medium"
                     style={{ background: getTypeColor(t.type.name) }}
                   >
                     {t.type.name}
@@ -274,7 +230,7 @@ const PokemonTable: React.FC<PokemonTableProps> = ({
             return <LoaderCell />;
           return (
             <div className="flex justify-center">
-              <span className="text-sm text-gray-700 font-medium">
+              <span className="text-base text-gray-700 font-medium">
                 {(details.weight / 10).toFixed(1)}
               </span>
             </div>
@@ -308,7 +264,7 @@ const PokemonTable: React.FC<PokemonTableProps> = ({
             return <LoaderCell />;
           return (
             <div className="flex justify-center">
-              <span className="text-sm text-gray-700 font-medium">
+              <span className="text-base text-gray-700 font-medium">
                 {(details.height / 10).toFixed(1)}
               </span>
             </div>
@@ -387,7 +343,7 @@ const PokemonTable: React.FC<PokemonTableProps> = ({
             return <LoaderCell />;
           return (
             <div className="flex justify-center">
-              <span className="text-sm text-gray-700 font-medium">
+              <span className="text-base text-gray-700 font-medium">
                 {details.base_experience}
               </span>
             </div>
@@ -642,35 +598,27 @@ const PokemonTable: React.FC<PokemonTableProps> = ({
     [getDetailsData, isLoadingDetails, getDetails]
   );
 
-  // Tabla y paginación
+  // Tabla con paginación integrada
   const table = useReactTable<PokemonListItem>({
-    data: currentPageData,
+    data: pokemons,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    state: {
-      pagination: {
-        pageIndex: currentPage - 1,
-        pageSize,
-      },
-    },
-    onPaginationChange: (updater) => {
-      if (typeof updater === "function") {
-        const newState = updater({ pageIndex: currentPage - 1, pageSize });
-        setCurrentPage(newState.pageIndex + 1);
-        setPageSize(newState.pageSize);
-      }
-    },
     initialState: {
       pagination: {
         pageIndex: 0,
-        pageSize: 20,
+        pageSize: pageSize,
       },
     },
     enableSorting: true,
     enableMultiSort: false,
   });
+
+  // Obtener información de paginación de la tabla
+  const currentPage = table.getState().pagination.pageIndex + 1;
+  const totalPages = table.getPageCount();
+  const totalItems = pokemons.length;
 
   return (
     <div className="w-full">
@@ -710,12 +658,15 @@ const PokemonTable: React.FC<PokemonTableProps> = ({
         currentPage={currentPage}
         totalPages={totalPages}
         pageSize={pageSize}
-        canPreviousPage={currentPage > 1}
-        canNextPage={currentPage < totalPages}
-        onPreviousPage={handlePreviousPage}
-        onNextPage={handleNextPage}
-        onGoToPage={handleGoToPage}
-        onPageSizeChange={handlePageSizeChange}
+        canPreviousPage={table.getCanPreviousPage()}
+        canNextPage={table.getCanNextPage()}
+        onPreviousPage={() => table.previousPage()}
+        onNextPage={() => table.nextPage()}
+        onGoToPage={(page) => table.setPageIndex(page - 1)}
+        onPageSizeChange={(newPageSize) => {
+          setPageSize(newPageSize);
+          table.setPageSize(newPageSize);
+        }}
         totalItems={totalItems}
       />
     </div>
