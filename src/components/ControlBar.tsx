@@ -1,23 +1,91 @@
+/**
+ * @fileoverview Barra de controles para filtrado, búsqueda y ordenamiento
+ * Este componente proporciona una interfaz completa para controlar la visualización
+ * de Pokémon con búsqueda, filtros por tipo, ordenamiento y cambio de vista.
+ */
+
 import { Filter, Grid, List, Loader2, Search, Target, X, ArrowUpDown, ArrowUp, ArrowDown, Plus } from "lucide-react";
 import React, { useState } from "react";
 import { PokemonTypeOption } from "../types/pokemon";
 import { getTypeColor } from "../utils/pokemonColors";
 
+/**
+ * Props del componente ControlBar
+ */
 interface ControlBarProps {
+  /** Término de búsqueda actual */
   searchTerm: string;
+  /** Función para actualizar el término de búsqueda */
   setSearchTerm: (term: string) => void;
+  /** Array de tipos seleccionados para filtrar */
   filterType: string[];
+  /** Función para actualizar los tipos de filtro */
   setFilterType: (types: string[]) => void;
+  /** Lista de todos los tipos de Pokémon disponibles */
   pokemonTypes: PokemonTypeOption[];
+  /** Modo de vista actual (grid o table) */
   viewMode: "grid" | "table";
+  /** Función para cambiar el modo de vista */
   setViewMode: (mode: "grid" | "table") => void;
+  /** Estado de carga para deshabilitar controles */
   isLoadingDetails?: boolean;
+  /** Campo actual de ordenamiento */
   sortBy?: "name" | "id" | "none";
+  /** Función para cambiar el campo de ordenamiento */
   setSortBy?: (sort: "name" | "id" | "none") => void;
+  /** Orden actual (ascendente o descendente) */
   sortOrder?: "asc" | "desc";
+  /** Función para cambiar el orden */
   setSortOrder?: (order: "asc" | "desc") => void;
 }
 
+/**
+ * Componente de barra de controles para la aplicación Pokémon
+ * 
+ * Este componente proporciona una interfaz completa para controlar la visualización
+ * de Pokémon. Incluye funcionalidades de:
+ * - Búsqueda por nombre
+ * - Filtrado por tipos (multiselect)
+ * - Ordenamiento por ID o nombre
+ * - Cambio entre vista de cuadrícula y tabla
+ * 
+ * El componente maneja estados de carga y proporciona feedback visual
+ * para todas las interacciones del usuario.
+ * 
+ * @param props - Propiedades del componente
+ * @param props.searchTerm - Término de búsqueda actual
+ * @param props.setSearchTerm - Función para actualizar búsqueda
+ * @param props.filterType - Tipos seleccionados para filtrar
+ * @param props.setFilterType - Función para actualizar filtros
+ * @param props.pokemonTypes - Lista de tipos disponibles
+ * @param props.viewMode - Modo de vista actual
+ * @param props.setViewMode - Función para cambiar vista
+ * @param props.isLoadingDetails - Estado de carga
+ * @param props.sortBy - Campo de ordenamiento
+ * @param props.setSortBy - Función para cambiar ordenamiento
+ * @param props.sortOrder - Orden actual
+ * @param props.setSortOrder - Función para cambiar orden
+ * 
+ * @returns JSX.Element - Barra de controles completa
+ * 
+ * @example
+ * ```typescript
+ * <ControlBar
+ *   searchTerm={searchTerm}
+ *   setSearchTerm={setSearchTerm}
+ *   filterType={filterType}
+ *   setFilterType={setFilterType}
+ *   pokemonTypes={pokemonTypes}
+ *   viewMode={viewMode}
+ *   setViewMode={setViewMode}
+ *   isLoadingDetails={isLoading}
+ *   sortBy={sortBy}
+ *   setSortBy={setSortBy}
+ *   sortOrder={sortOrder}
+ *   setSortOrder={setSortOrder}
+ * />
+ * ```
+ */
 const ControlBar: React.FC<ControlBarProps> = ({
   searchTerm,
   setSearchTerm,
@@ -32,8 +100,14 @@ const ControlBar: React.FC<ControlBarProps> = ({
   sortOrder = "asc",
   setSortOrder = () => {},
 }) => {
+  /** Estado para mostrar/ocultar el dropdown de tipos */
   const [showTypeDropdown, setShowTypeDropdown] = useState(false);
 
+  /**
+   * Alterna el ordenamiento entre ascendente, descendente y sin orden
+   * 
+   * @param newSortBy - Nuevo campo de ordenamiento
+   */
   const toggleSort = (newSortBy: "name" | "id") => {
     if (sortBy === newSortBy) {
       if (sortOrder === "asc") {
@@ -49,11 +123,22 @@ const ControlBar: React.FC<ControlBarProps> = ({
     }
   };
 
+  /**
+   * Obtiene el icono apropiado para el ordenamiento
+   * 
+   * @param type - Tipo de ordenamiento (name o id)
+   * @returns JSX.Element - Icono de ordenamiento
+   */
   const getSortIcon = (type: "name" | "id") => {
     if (sortBy !== type) return <ArrowUpDown className="w-4 h-4" />;
     return sortOrder === "asc" ? <ArrowUp className="w-4 h-4" /> : <ArrowDown className="w-4 h-4" />;
   };
 
+  /**
+   * Alterna la selección de un tipo de filtro
+   * 
+   * @param typeName - Nombre del tipo a alternar
+   */
   const handleTypeToggle = (typeName: string) => {
     if (filterType.includes(typeName)) {
       setFilterType(filterType.filter(t => t !== typeName));
@@ -62,24 +147,32 @@ const ControlBar: React.FC<ControlBarProps> = ({
     }
   };
 
+  /**
+   * Remueve un tipo específico del filtro
+   * 
+   * @param typeName - Nombre del tipo a remover
+   */
   const removeType = (typeName: string) => {
     setFilterType(filterType.filter(t => t !== typeName));
   };
 
+  /**
+   * Limpia todos los filtros de tipo
+   */
   const clearAllTypes = () => {
     setFilterType([]);
   };
 
-  // Filtrar tipos disponibles (excluir los ya seleccionados)
+  /** Tipos disponibles para agregar (excluyendo los ya seleccionados) */
   const availableTypes = pokemonTypes.filter(type => !filterType.includes(type.name));
 
   return (
-    <div className="w-full bg-white/95 backdrop-blur-xl rounded-xl border border-gray-300/60 p-6 mb-8 shadow-sm relative">
+    <div className="w-full bg-white/95 backdrop-blur-xl rounded-xl border border-gray-300/60 p-6 mb-8 shadow-sm relative z-10">
       
       <div className="relative z-10">
-        {/* FILA PRINCIPAL */}
+        {/* Fila principal de controles */}
         <div className="flex flex-col lg:flex-row gap-6 items-start lg:items-center mb-4">
-          {/* BÚSQUEDA */}
+          {/* Sección de búsqueda */}
           <div className="flex-1 w-full lg:w-auto">
             <div className="flex items-center gap-2 mb-2">
               <div className="p-1.5 bg-blue-600 rounded-lg shadow-md">
@@ -99,7 +192,7 @@ const ControlBar: React.FC<ControlBarProps> = ({
             </div>
           </div>
 
-          {/* ORDENAMIENTO */}
+          {/* Sección de ordenamiento */}
           <div className="flex-shrink-0">
             <div className="flex items-center gap-2 mb-2">
               <div className={`p-1.5 rounded-lg shadow-md ${
@@ -153,7 +246,7 @@ const ControlBar: React.FC<ControlBarProps> = ({
             </div>
           </div>
 
-                    {/* FILTRO POR TIPO - MULTISELECT */}
+          {/* Filtro por tipo - Multiselect */}
           <div className="flex-shrink-0">
             <div className="flex items-center gap-2 mb-2">
               <div className="p-1.5 bg-emerald-600 rounded-lg shadow-md">
@@ -165,7 +258,7 @@ const ControlBar: React.FC<ControlBarProps> = ({
             </div>
             
             {/* Dropdown para agregar tipos */}
-            <div className="relative">
+            <div className="relative z-11">
               <button
                 onClick={() => setShowTypeDropdown(!showTypeDropdown)}
                 disabled={isLoadingDetails || availableTypes.length === 0}
@@ -183,7 +276,7 @@ const ControlBar: React.FC<ControlBarProps> = ({
               </button>
 
               {showTypeDropdown && availableTypes.length > 0 && (
-                <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300/70 rounded-lg shadow-xl z-50 max-h-60 overflow-y-auto">
+                <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300/70 rounded-lg shadow-xl z-[9999] max-h-60 overflow-y-auto">
                   {availableTypes.map((type) => (
                     <button
                       key={type.name}

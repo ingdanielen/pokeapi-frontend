@@ -5,7 +5,6 @@ import { PokemonDetails } from "../types/pokemon";
 export function usePokemonDetailsCache() {
   const cache = useRef<Record<string, PokemonDetails | undefined>>({});
   const [loadingIds, setLoadingIds] = useState<Set<string>>(new Set());
-  const [, forceUpdate] = useState({});
 
   // Pedir detalles de varios pokémon por nombre o url
   const fetchDetails = async (namesOrUrls: string[]) => {
@@ -32,7 +31,6 @@ export function usePokemonDetailsCache() {
       toFetch.forEach((k) => next.delete(k.toLowerCase()));
       return next;
     });
-    forceUpdate({}); // Forzar rerender
   };
 
   // Obtener detalles de un pokémon

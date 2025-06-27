@@ -1,22 +1,16 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import { usePokemonData } from "../../context/PokemonDataContext";
-import { usePokemonDetailsCache } from "../../hooks/usePokemonDetailsCache";
 import Image from "next/image";
 
-interface HeaderProps {
-  onPokemonSelect?: (pokemonName: string) => void;
-}
-
-const Header: React.FC<HeaderProps> = ({ onPokemonSelect }) => {
+const Header: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [showResults, setShowResults] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const searchRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const { pokemons } = usePokemonData();
-  const { fetchDetails } = usePokemonDetailsCache();
+  const { pokemons, openModal } = usePokemonData();
 
   // Función para obtener el ID del Pokémon desde la URL
   const getIdFromUrl = (url: string) => {
@@ -75,8 +69,7 @@ const Header: React.FC<HeaderProps> = ({ onPokemonSelect }) => {
   };
 
   const handlePokemonSelect = async (pokemonName: string) => {
-    await fetchDetails([pokemonName]);
-    onPokemonSelect?.(pokemonName);
+    await openModal(pokemonName);
     setSearchTerm("");
     setShowResults(false);
     setSelectedIndex(-1);

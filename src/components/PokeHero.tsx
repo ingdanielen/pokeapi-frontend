@@ -1,14 +1,54 @@
+/**
+ * @fileoverview Componente Hero principal de la aplicación Pokémon
+ * Este componente renderiza la sección hero con título, descripción,
+ * botón de exploración y elementos decorativos animados.
+ */
+
 "use client"
 import type React from "react"
 import Image from "next/image"
 import WaveAnimation from "./PixelDissolveAnimation"
 import { EyeIcon } from "lucide-react"
 
+/**
+ * Props del componente PokemonHero
+ */
 interface PokemonHeroProps {
+  /** Función opcional que se ejecuta al hacer clic en explorar */
   onExploreClick?: () => void
 }
 
+/**
+ * Componente Hero principal de la aplicación Pokémon
+ * 
+ * Este componente crea la sección hero de la aplicación con:
+ * - Título principal con branding
+ * - Descripción de la aplicación
+ * - Botón de exploración con scroll suave
+ * - Imagen decorativa de Pokémon
+ * - Elementos animados (pokéball giratoria, oleaje)
+ * - Diseño responsivo completo
+ * 
+ * El componente incluye funcionalidad de scroll automático
+ * hacia la sección de contenido cuando se hace clic en "Explorar".
+ * 
+ * @param props - Propiedades del componente
+ * @param props.onExploreClick - Función callback opcional
+ * 
+ * @returns JSX.Element - Sección hero completa
+ * 
+ * @example
+ * ```typescript
+ * <PokemonHero 
+ *   onExploreClick={() => console.log('Explorando...')} 
+ * />
+ * ```
+ */
 const PokemonHero: React.FC<PokemonHeroProps> = ({ onExploreClick }) => {
+  /**
+   * Maneja el clic en el botón de exploración
+   * Realiza scroll suave hacia la sección de contenido
+   */
   const handleExploreClick = () => {
     // Buscar el elemento que contenga el ControlBar o PokemonGrid como referencia
     const contentElement = document.querySelector('[data-content-section]') || 
@@ -34,6 +74,7 @@ const PokemonHero: React.FC<PokemonHeroProps> = ({ onExploreClick }) => {
       onExploreClick();
     }
   };
+
   return (
     <div className="relative bg-orange-600 overflow-hidden -mt-5" >
       {/* Decorative elements */}
