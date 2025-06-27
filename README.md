@@ -1,4 +1,4 @@
-# Pokémon Explorer 🎮
+# PokeApi Kanto 🎮
 
 Una aplicación web moderna para explorar y descubrir el mundo Pokémon, construida con Next.js 15, React 19, TypeScript y Tailwind CSS.
 
